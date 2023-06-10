@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Image Discussions{% endblock %}
+
+{% block contents %}
+<div class="container">
+  <h2>{{ board.title }}の掲示板</h2>
+  <hr>
+
+  <div class="row">
+    {% for image in images %}
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="{{ image.url }}" class="card-img-top" alt="Image">
+          <div class="card-body">
+            <h5 class="card-title">{{ image.title }}</h5>
+            <p class="card-text">Posted by: {{ image.user.username }}</p>
+            <a href="{% url 'view_comments' image.id %}" class="btn btn-primary">View Comments</a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>コメントはまだありません</p>
+    {% endfor %}
+  </div>
+
+  <hr>
+
+  <h4>新しいコメントを追加</h4>
+  <form action="#" method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="comment-text">コメント:</label>
+      <textarea class="form-control" id="comment-text" name="comment" rows="3" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">投稿する</button>
+  </form>
+
+  <hr>
+
+  <h4>コメント一覧</h4>
+  {% if comments %}
+    <ul>
+      {% for comment in comments %}
+        <li>{{ comment }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>コメントはありません</p>
+  {% endif %}
+</div>
+{% endblock %}

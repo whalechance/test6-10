@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Photo Detail{% endblock %}
+
+{% block extra_css %}
+<style>
+  .image-container {
+    text-align: center;
+  }
+
+  .image-container img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+</style>
+{% endblock %}
+
+       {% block contents %}
+       <!-- bootstrapのグリッドシステム -->
+　　　　<br>
+       <div class="container">
+         <!-- 行を配置 -->
+         <div class="row justify-content-center">
+           <div class="col offset">
+             <!-- タイトル -->
+             <h2>{{object.title}}</h2>
+             <!-- コメント -->
+             <p>{{object.comment}}</p>
+             <br>
+             <!-- 投稿日時 -->
+             <p>{{object.posted_at}}に投稿</p>
+
+             <div class="image-container">
+                 <!-- 1枚目の写真 -->
+                 {% if object.image1 %}
+                 <p><img src="{{object.image1.url}}" class="mx-auto d-block"></p>
+                 {% endif %}
+                 <!-- 2枚目の写真が投稿されていたら表示 -->
+                 {% if object.image2 %}
+                 <p><img src="{{object.image2.url}}" class="mx-auto d-block"></p>
+                 {% endif %}
+                 <!-- 動画が投稿されていたらリンクを表示 -->
+                 {% if object.video %}
+                 <p><img src="{{object.video_thumbnail.url}}" class="mx-auto d-block"></p>
+                 <p><a href="{{object.video.url}}" target="_blank">動画を再生する</a></p>
+                 {% endif %}
+             </div>
+             <!-- 投稿写真がログイン中のユーザーのものであれば、削除ボタンを表示 -->
+             {% if request.user == object.user %}
+               <form method="POST">
+                   <a href="{% url 'photo:photo_delete' object.pk %}" class="btn btn-primary my-2">削除する</a>
+             {% endif %}
+           </div>
+         </div>
+       </div>
+      {% endblock %}

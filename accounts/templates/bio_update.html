@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Edit Bio{% endblock %}
+
+{% block contents %}
+<h2>自己紹介を編集</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.bio }}
+    <button type="submit">保存</button>
+</form>
+{% endblock %}
